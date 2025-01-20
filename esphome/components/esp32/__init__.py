@@ -8,7 +8,6 @@ from esphome import git
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.const import (
-    CONF_ADD_ARDUINO_COMPONENT,
     CONF_ADVANCED,
     CONF_BOARD,
     CONF_COMPONENTS,
@@ -66,6 +65,7 @@ _LOGGER = logging.getLogger(__name__)
 CODEOWNERS = ["@esphome/core"]
 AUTO_LOAD = ["preferences"]
 
+CONF_ADD_ARDUINO_COMPONENT = "add_arduino_component"
 CONF_RELEASE = "release"
 
 
