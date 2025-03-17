@@ -590,6 +590,12 @@ async def to_code(config):
         os.path.join(os.path.dirname(__file__), "post_build.py.script"),
     )
 
+    cg.add_platformio_option("board_build.partitions", "partitions.csv")
+    if CONF_PARTITIONS in config:
+        add_extra_build_file(
+            "partitions.csv", CORE.relative_config_path(config[CONF_PARTITIONS])
+        )
+
     if conf[CONF_TYPE] == FRAMEWORK_ESP_IDF:
         cg.add_platformio_option("framework", "espidf")
         cg.add_build_flag("-DUSE_ESP_IDF")
@@ -622,12 +628,6 @@ async def to_code(config):
         add_idf_sdkconfig_option("CONFIG_ESP_TASK_WDT_PANIC", True)
         add_idf_sdkconfig_option("CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0", False)
         add_idf_sdkconfig_option("CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1", False)
-
-        cg.add_platformio_option("board_build.partitions", "partitions.csv")
-        if CONF_PARTITIONS in config:
-            add_extra_build_file(
-                "partitions.csv", CORE.relative_config_path(config[CONF_PARTITIONS])
-            )
 
         for name, value in conf[CONF_SDKCONFIG_OPTIONS].items():
             add_idf_sdkconfig_option(name, RawSdkconfigValue(value))
@@ -671,11 +671,6 @@ async def to_code(config):
             "platform_packages",
             [f"platformio/framework-arduinoespressif32@{conf[CONF_SOURCE]}"],
         )
-
-        if CONF_PARTITIONS in config:
-            cg.add_platformio_option("board_build.partitions", config[CONF_PARTITIONS])
-        else:
-            cg.add_platformio_option("board_build.partitions", "partitions.csv")
 
         cg.add_define(
             "USE_ARDUINO_VERSION_CODE",
